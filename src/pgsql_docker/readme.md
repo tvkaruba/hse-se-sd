@@ -56,7 +56,7 @@ services:
       POSTGRES_PASSWORD: "testpgpass"
       PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
-      - ../2. Init Database:/docker-entrypoint-initdb.d
+      - ./scripts:/docker-entrypoint-initdb.d
       - testdb-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
