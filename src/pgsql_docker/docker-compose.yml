@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:16.1-alpine3.18
+    environment:
+      POSTGRES_DB: "testdb"
+      POSTGRES_USER: "testpguser"
+      POSTGRES_PASSWORD: "testpgpass"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ./scripts:/docker-entrypoint-initdb.d
+      - testdb-data:/var/lib/postgresql/data
+    ports:
+      - "6432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U testpguser -d testdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+volumes:
+  testdb-data:
