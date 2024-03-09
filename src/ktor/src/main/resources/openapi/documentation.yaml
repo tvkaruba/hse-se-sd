@@ -1,0 +1,72 @@
+openapi: "3.0.3"
+info:
+  title: "KTOR API"
+  description: "OpenAPI example"
+  version: "1.0.0"
+servers:
+  - url: "http://127.0.0.1:8000"
+paths:
+  /user:
+    post:
+      description: "Creates a new user"
+      requestBody:
+        description: "JSON object containing user info"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserRequest"
+      responses:
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+    get:
+      description: "Returns user by its ID"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+  /user/{id}:
+    get:
+      description: "Returns a user by its ID"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+components:
+  schemas:
+    CreateUserRequest:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        email:
+          type: "string"
+          example: test@mail.com
+    UserResponse:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+        name:
+          type: "string"
+        email:
+          type: "string"
+          example: test@mail.com
