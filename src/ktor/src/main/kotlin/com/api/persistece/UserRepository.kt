@@ -2,7 +2,7 @@ package com.api.persistece
 
 import com.api.models.domain.User
 import com.api.models.errors.UserNotFoundException
-import com.api.models.dtos.UserTable
+import com.api.models.persistense.UserTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -25,20 +25,16 @@ class UserRepository : Repository.Create<User>, Repository.Read<User>, Repositor
 
     override fun getById(id: UUID): User = transaction {
         UserTable
-            .select { UserTable.id eq id }
+            .selectAll().where { UserTable.id eq id }
             .firstOrNull()
             ?.toDomain() ?: throw UserNotFoundException(id)
-
     }
 
     override fun create(entity: User): User = transaction {
-        val now = LocalDateTime.now()
         UserTable
             .insert {
                 it[email] = entity.email
                 it[name] = entity.name
-                it[created] = now
-                it[updated] = now
             }.resultedValues!!
             .first()
             .toDomain()

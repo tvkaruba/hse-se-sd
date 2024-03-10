@@ -1,4 +1,4 @@
-package com.api.models.dtos
+package com.api.models.persistense
 
 import org.jetbrains.exposed.dao.id.UUIDTable
 import org.jetbrains.exposed.sql.javatime.datetime
