@@ -6,6 +6,11 @@ ktor:
   deployment:
     port: 8000
 
+jwt:
+  domain: "https://jwt-provider-domain/"
+  audience: "jwt-audience"
+  realm: "ktor-api"
+
 storage:
   url: "jdbc:postgresql://localhost:6432/testdb"
   user: "testpguser"
