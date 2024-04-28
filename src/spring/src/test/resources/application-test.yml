@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/testdb
+    username: testpguser
+    password: testpgpassword
+  test:
+    database:
+      replace: none
+  jpa:
+    properties:
+      hibernate.generate_statistics: true
