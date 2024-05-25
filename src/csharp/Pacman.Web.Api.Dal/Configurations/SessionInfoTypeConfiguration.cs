@@ -12,9 +12,6 @@ public class SessionInfoTypeConfiguration : EntityTypeConfigurationBase<SessionI
         builder.Property(_ => _.CreatedBy).IsRequired();
         builder.Property(_ => _.CreatedAt).IsRequired();
 
-        builder.HasOne(_ => _.User);
-        builder.HasOne(_ => _.Level);
-
         builder.HasMany(_ => _.TickStates).WithOne(_ => _.Session);
     }
 }

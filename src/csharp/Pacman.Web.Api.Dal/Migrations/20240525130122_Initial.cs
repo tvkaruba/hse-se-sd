@@ -4,6 +4,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Pacman.Web.Api.Dal.Migrations
 {
     /// <inheritdoc />
@@ -69,6 +71,23 @@ namespace Pacman.Web.Api.Dal.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LevelInfos", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SessionInfos",
+                schema: "public",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SessionInfos", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -178,38 +197,6 @@ namespace Pacman.Web.Api.Dal.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SessionInfos",
-                schema: "public",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Title = table.Column<string>(type: "text", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LevelId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SessionInfos", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SessionInfos_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SessionInfos_LevelInfos_LevelId",
-                        column: x => x.LevelId,
-                        principalSchema: "public",
-                        principalTable: "LevelInfos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TickStates",
                 schema: "public",
                 columns: table => new
@@ -230,6 +217,27 @@ namespace Pacman.Web.Api.Dal.Migrations
                         principalTable: "SessionInfos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), 0, "2a8f20be-b246-4b53-b187-990655902625", "myuser@user.com", false, false, null, null, null, "AQAAAAIAAYagAAAAEO5sVXf9yhg1otBbfHcRZw1Y3u2BBeBbt8NAHMTpjbauA1LYXsanL6ArcqdKYWGGHg==", null, false, null, false, null });
+
+            migrationBuilder.InsertData(
+                schema: "public",
+                table: "SessionInfos",
+                columns: new[] { "Id", "CreatedAt", "CreatedBy", "Title", "UpdatedAt", "UpdatedBy" },
+                values: new object[] { new Guid("8e445865-a24d-4543-a6c6-9443d048cd10"), new DateTime(2024, 5, 25, 13, 1, 21, 894, DateTimeKind.Utc).AddTicks(9587), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "test", null, null });
+
+            migrationBuilder.InsertData(
+                schema: "public",
+                table: "TickStates",
+                columns: new[] { "Id", "CreatedAt", "SessionId", "TickNumber", "TickSnapshot" },
+                values: new object[,]
+                {
+                    { new Guid("8e445865-a24d-4543-a6c6-9443d048cd11"), new DateTime(2024, 5, 25, 13, 1, 21, 894, DateTimeKind.Utc).AddTicks(9659), new Guid("8e445865-a24d-4543-a6c6-9443d048cd10"), 1, "12345" },
+                    { new Guid("8e445865-a24d-4543-a6c6-9443d048cd12"), new DateTime(2024, 5, 25, 13, 1, 21, 894, DateTimeKind.Utc).AddTicks(9667), new Guid("8e445865-a24d-4543-a6c6-9443d048cd10"), 2, "12346" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -270,18 +278,6 @@ namespace Pacman.Web.Api.Dal.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_SessionInfos_LevelId",
-                schema: "public",
-                table: "SessionInfos",
-                column: "LevelId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SessionInfos_UserId",
-                schema: "public",
-                table: "SessionInfos",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_TickStates_SessionId",
                 schema: "public",
                 table: "TickStates",
@@ -307,6 +303,10 @@ namespace Pacman.Web.Api.Dal.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "LevelInfos",
+                schema: "public");
+
+            migrationBuilder.DropTable(
                 name: "TickStates",
                 schema: "public");
 
@@ -314,14 +314,10 @@ namespace Pacman.Web.Api.Dal.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "SessionInfos",
-                schema: "public");
-
-            migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "LevelInfos",
+                name: "SessionInfos",
                 schema: "public");
         }
     }

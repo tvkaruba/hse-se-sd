@@ -12,7 +12,7 @@ using Pacman.Web.Api.Dal;
 namespace Pacman.Web.Api.Dal.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240525100252_Initial")]
+    [Migration("20240525130122_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -139,6 +139,20 @@ namespace Pacman.Web.Api.Dal.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "2a8f20be-b246-4b53-b187-990655902625",
+                            Email = "myuser@user.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "AQAAAAIAAYagAAAAEO5sVXf9yhg1otBbfHcRZw1Y3u2BBeBbt8NAHMTpjbauA1LYXsanL6ArcqdKYWGGHg==",
+                            PhoneNumberConfirmed = false,
+                            TwoFactorEnabled = false
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
@@ -259,9 +273,6 @@ namespace Pacman.Web.Api.Dal.Migrations
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("LevelId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
@@ -272,16 +283,18 @@ namespace Pacman.Web.Api.Dal.Migrations
                     b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("LevelId");
-
-                    b.HasIndex("UserId");
-
                     b.ToTable("SessionInfos", "public");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("8e445865-a24d-4543-a6c6-9443d048cd10"),
+                            CreatedAt = new DateTime(2024, 5, 25, 13, 1, 21, 894, DateTimeKind.Utc).AddTicks(9587),
+                            CreatedBy = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            Title = "test"
+                        });
                 });
 
             modelBuilder.Entity("Pacman.Web.Api.Dal.Models.TickState", b =>
@@ -308,6 +321,24 @@ namespace Pacman.Web.Api.Dal.Migrations
                     b.HasIndex("SessionId");
 
                     b.ToTable("TickStates", "public");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("8e445865-a24d-4543-a6c6-9443d048cd11"),
+                            CreatedAt = new DateTime(2024, 5, 25, 13, 1, 21, 894, DateTimeKind.Utc).AddTicks(9659),
+                            SessionId = new Guid("8e445865-a24d-4543-a6c6-9443d048cd10"),
+                            TickNumber = 1,
+                            TickSnapshot = "12345"
+                        },
+                        new
+                        {
+                            Id = new Guid("8e445865-a24d-4543-a6c6-9443d048cd12"),
+                            CreatedAt = new DateTime(2024, 5, 25, 13, 1, 21, 894, DateTimeKind.Utc).AddTicks(9667),
+                            SessionId = new Guid("8e445865-a24d-4543-a6c6-9443d048cd10"),
+                            TickNumber = 2,
+                            TickSnapshot = "12346"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -359,25 +390,6 @@ namespace Pacman.Web.Api.Dal.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Pacman.Web.Api.Dal.Models.SessionInfo", b =>
-                {
-                    b.HasOne("Pacman.Web.Api.Dal.Models.LevelInfo", "Level")
-                        .WithMany()
-                        .HasForeignKey("LevelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser<System.Guid>", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Level");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Pacman.Web.Api.Dal.Models.TickState", b =>

@@ -42,21 +42,15 @@ public class DataContext : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Gu
             {
                 Id = sessionId,
                 CreatedBy = id,
-                CreatedAt = DateTime.Now,
+                CreatedAt = DateTime.UtcNow,
                 Title = "test",
-                //Level = new LevelInfo
-                //{
-                //    CreatedBy = id,
-                //    CreatedAt = DateTime.Now,
-                //    Map = "!!!!!!!!!",
-                //}
             });
 
         builder.Entity<TickState>()
             .HasData(new TickState
             {
                 Id = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cd11"),
-                CreatedAt = DateTime.Now,
+                CreatedAt = DateTime.UtcNow,
                 TickSnapshot = "12345",
                 TickNumber = 1,
                 SessionId = sessionId,
@@ -64,7 +58,7 @@ public class DataContext : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Gu
             new TickState
             {
                 Id = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cd12"),
-                CreatedAt = DateTime.Now,
+                CreatedAt = DateTime.UtcNow,
                 TickSnapshot = "12346",
                 TickNumber = 2,
                 SessionId = sessionId,
