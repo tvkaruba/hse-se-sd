@@ -36,36 +36,38 @@ public class DataContext : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Gu
             }
         );
 
+        var sessionId = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cd10");
         builder.Entity<SessionInfo>()
             .HasData(new SessionInfo
             {
-                Id = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cd10"),
+                Id = sessionId,
                 CreatedBy = id,
                 CreatedAt = DateTime.Now,
                 Title = "test",
-                TickStates =
-                [
-                    new TickState
-                    {
-                        Id = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cd11"),
-                        CreatedAt = DateTime.Now,
-                        TickSnapshot = "12345",
-                        TickNumber = 1,
-                    },
-                    new TickState
-                    {
-                        Id = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cd12"),
-                        CreatedAt = DateTime.Now,
-                        TickSnapshot = "12346",
-                        TickNumber = 2,
-                    }
-                ],
                 //Level = new LevelInfo
                 //{
                 //    CreatedBy = id,
                 //    CreatedAt = DateTime.Now,
                 //    Map = "!!!!!!!!!",
                 //}
+            });
+
+        builder.Entity<TickState>()
+            .HasData(new TickState
+            {
+                Id = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cd11"),
+                CreatedAt = DateTime.Now,
+                TickSnapshot = "12345",
+                TickNumber = 1,
+                SessionId = sessionId,
+            },
+            new TickState
+            {
+                Id = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cd12"),
+                CreatedAt = DateTime.Now,
+                TickSnapshot = "12346",
+                TickNumber = 2,
+                SessionId = sessionId,
             });
     }
 }

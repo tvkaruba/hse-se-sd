@@ -3,6 +3,7 @@ using System.Net.WebSockets;
 
 namespace Pacman.Web.Api.Controllers;
 
+[ApiExplorerSettings(IgnoreApi = true)]
 public class WebSocketController : ControllerBase
 {
     [Route("/ws")]
