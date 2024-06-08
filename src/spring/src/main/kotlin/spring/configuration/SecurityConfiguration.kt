@@ -30,7 +30,7 @@ class SecurityConfiguration(private val authenticationProvider: AuthenticationPr
           .requestMatchers("/api/user**")
           .hasRole("ADMIN")
           .anyRequest()
-          .fullyAuthenticated()
+          .permitAll()
       }
       .sessionManagement {
         it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)

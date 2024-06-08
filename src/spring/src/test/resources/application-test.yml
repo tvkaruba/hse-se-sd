@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/testdb
+    url: jdbc:postgresql://localhost:6432/testdb
     username: testpguser
-    password: testpgpassword
+    password: testpgpass
   test:
     database:
       replace: none
